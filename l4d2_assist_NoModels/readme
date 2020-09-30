@@ -1,0 +1,5 @@
+Show damage done to S.I. by survivors
+
+-Convars-
+"sm_assist_tank_only", 	"1", 	"Enables this will show only damage done to Tank."
+"sm_assist_enable", 	"1", 	"Enables this plugin."
