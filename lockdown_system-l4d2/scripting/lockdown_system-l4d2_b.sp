@@ -6,7 +6,7 @@
 #include <sdkhooks>
 #include <glow>
 #include <left4dhooks>
-#define PLUGIN_VERSION "3.2"
+#define PLUGIN_VERSION "3.3"
 
 #define UNLOCK 0
 #define LOCK 1
@@ -244,7 +244,7 @@ public Action Timer_SpawnTank(Handle timer)
 	if(RealFreePlayersOnInfected())
 		CheatCommand(GetRandomClient(), "z_spawn_old", "tank auto");
 	else
-		ExecuteSpawn(0, "tank auto", 1, true);
+		ExecuteSpawn(true, 1);
 }
 
 public void OnRoundEvents(Event event, const char[] name, bool dontBroadcast)
@@ -365,7 +365,7 @@ public Action OnPlayerUsePre(Event event, const char[] name, bool dontBroadcast)
 
 				if(bTankDemolitionBefore && !bSpawnTank) 
 				{
-					ExecuteSpawn(0, "tank auto", 1, true);
+					ExecuteSpawn(true , 1);
 					bSpawnTank = true;
 				}
 				
@@ -389,7 +389,7 @@ public Action OnPlayerUsePre(Event event, const char[] name, bool dontBroadcast)
 						GetClientAbsOrigin(user, fFirstUserOrigin);
 						GetClientName(user, sKeyMan, sizeof(sKeyMan));
 						
-						ExecuteSpawn(user, "mob auto", iMobs);
+						ExecuteSpawn(false, iMobs);
 						
 						if (hAntiFarmTime == null)
 						{
@@ -414,7 +414,7 @@ public Action OnPlayerUsePre(Event event, const char[] name, bool dontBroadcast)
 						GetClientAbsOrigin(user, fFirstUserOrigin);
 						GetClientName(user, sKeyMan, sizeof(sKeyMan));
 						
-						ExecuteSpawn(user, "mob auto", iMobs);
+						ExecuteSpawn(false, iMobs);
 						if (iType == 1)
 						{
 							ControlDoor(iCheckpointDoor, UNLOCK);
@@ -449,7 +449,7 @@ public Action CheckAntiFarm(Handle timer, any entity)
 		if (!bLockdownInit)
 		{
 			bLockdownInit = true;
-			ExecuteSpawn(GetRandomClient(), "mob auto", iMobs);
+			ExecuteSpawn(false, iMobs);
 			
 			if (iType == 1)
 			{
@@ -512,7 +512,7 @@ public Action LockdownOpening(Handle timer, any entity)
 			}
 			
 			CreateTimer(5.0, LaunchTankDemolition);
-			CreateTimer(5.0, LaunchSlayLimit, entity);
+			CreateTimer(5.0, LaunchSlayTimer, entity);
 		}
 		return Plugin_Stop;
 	}
@@ -551,7 +551,7 @@ public Action LaunchTankDemolition(Handle timer)
 		return Plugin_Stop;
 	}
 	
-	ExecuteSpawn(0, "tank auto", 4, true);
+	ExecuteSpawn(true, 4);
 	if (bAnnounce)
 	{
 		PrintToChatAll("\x01[\x05TS\x01]\x01 \x04Tank \x01大軍壓境!!");
@@ -560,7 +560,7 @@ public Action LaunchTankDemolition(Handle timer)
 	return Plugin_Stop;
 }
 
-public Action LaunchSlayLimit(Handle timer, any entity)
+public Action LaunchSlayTimer(Handle timer, any entity)
 {
 	iSystemTime = iGetInLimit;
 	CreateTimer(1.0, AntiPussy, entity, TIMER_REPEAT | TIMER_FLAG_NO_MAPCHANGE);
@@ -793,31 +793,27 @@ stock bool IsCommonInfected(int entity)
 	return false;
 }
 
-stock void ExecuteSpawn(int client, char[] sInfected, int iCount, bool btank = false)
+stock void ExecuteSpawn(bool btank, int iCount)
 {
 	if (btank)
 	{
 		CreateTankBot();
 		iCount--;
-		for (int i = 0; i < iCount; i++)
+		for (int i = 1; i <= iCount; i++)
 		{
 			CreateTimer(0.5 * i, Timer_CreateTank);
 		}
 	}
 	else
 	{
-		if(client > 0)
+		int anyclient = GetRandomClient();
+		if(anyclient > 0)
 		{
-			char sCommand[16];
-			strcopy(sCommand, sizeof(sCommand), "z_spawn");
-			int iFlags = GetCommandFlags(sCommand);
-			SetCommandFlags(sCommand, iFlags & ~FCVAR_CHEAT);
 			for (int i = 0; i < iCount; i++)
 			{
-				FakeClientCommand(client, "%s %s", sCommand, sInfected);
+				FakeClientCommand(anyclient, "z_spawn mob auto");
 			}
-			SetCommandFlags(sCommand, iFlags);
-		}
+		}	
 	}
 }
 

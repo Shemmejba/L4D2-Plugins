@@ -1,6 +1,9 @@
 Locks Saferoom Door Until Someone Opens It.
 
 -Changelog-
+v3.3
+-improve code
+
 v3.2
 -Fixed "lockdown_system-l4d2_spam_bot_disable" not working
 
