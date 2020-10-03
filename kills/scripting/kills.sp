@@ -1,8 +1,8 @@
+#pragma semicolon 1
+#pragma newdecls required //強制1.7以後的新語法
 #include <sourcemod>
 #include <sdktools>
 #include <multicolors>
-#pragma semicolon 1
-#pragma newdecls required //強制1.7以後的新語法
 
 #define L4D_TEAM_INFECTED 3
 #define L4D_TEAM_SURVIVOR 2
@@ -20,10 +20,10 @@ bool HasRoundEndedPrinted;
 
 public Plugin myinfo = 
 {
-	name = "杀特殊感染者统计",
-	author = "fenghf,l4d1 modify by Harry Potter",
-	description = "杀特殊感染者统计",
-	version = "1.3",
+	name = "擊殺殭屍與特殊感染者統計",
+	author = "fenghf & Harry Potter",
+	description = "show statistics of surviviors (kill S.I, C.I. and FF)on round end",
+	version = "1.4",
 	url = "https://steamcommunity.com/id/TIGER_x_DRAGON/"
 }
 public void OnPluginStart()   
