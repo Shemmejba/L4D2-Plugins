@@ -1,5 +1,15 @@
 Show damage done to S.I. by survivors
 
+-Changelog-
+v1.8
+-Remake code
+
+v1.6
+-Original Post: https://forums.alliedmods.net/showthread.php?t=123811?t=123811
+
 -Convars-
-"sm_assist_tank_only", 	"1", 	"Enables this will show only damage done to Tank."
-"sm_assist_enable", 	"1", 	"Enables this plugin."
+// Enables this will show only damage done to Tank.
+sm_assist_tank_only	"1"
+
+// Enables this plugin.
+sm_assist_enable "1"
